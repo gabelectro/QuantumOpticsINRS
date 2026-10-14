@@ -173,7 +173,7 @@ def run_full_scan():
 
     timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M")
     text_file_name = f"{timestamp}_optical_power_meter_scan.txt"
-    folder = r"C:\\Student Folders\\Iftekhar\\beam diameter"
+    folder = r"C:\\Code\\QuantumOpticsINRS\\Data\\"
     os.makedirs(folder, exist_ok=True)
 
     file_name = os.path.join(folder, text_file_name)
