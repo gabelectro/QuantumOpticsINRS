@@ -23,18 +23,21 @@ class AMC_Axis:
 
     def closedloop(self,enable=True):
         self.dev.control.setControlMove(self.axis_id, enable)
-    def move_abs(self, pos_um,fastscan = True,maxerror = 0.1):
+    def move_abs(self, target_um,fastscan = True,maxerr_um = 0.1,stbcheck = False):
+        initime = time.time()
         pos_nm = int(pos_um * 1e3)
         perror = 0
+        timeout = 10.0  # seconds
         moving = False
         self.dev.move.setControlTargetPosition(self.axis_id, pos_nm)
         #while not self.dev.status.getStatusTargetRange(self.axis_id):
         while self.dev.status.getStatusMoving(self.axis_id):
             #time.sleep(0.05)
             moving = True
-            pos = self.dev.move.getPosition(self.axis_id) / 1e3
-            perror = pos - pos_um
-            if abs(perror) < maxerror:
+            pos_um = self.dev.move.getPosition(self.axis_id) / 1e3
+            estdur = perror / self.freq
+            perror = pos_um - target_um
+            if abs(perror) < maxerr_um:
                 if fastscan:
                     break
         
